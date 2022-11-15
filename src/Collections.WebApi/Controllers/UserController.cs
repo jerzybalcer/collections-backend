@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Collections.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -17,17 +17,17 @@ namespace Collections.WebApi.Controllers
         }
 
         [HttpGet("{id}/items")]
-        public async Task<IActionResult> GetUserItems()
+        public async Task<IActionResult> GetUserItems(Guid id)
         {
-            var result = await _mediator.Send(new GetUserItemsQuery { UserId = Guid.NewGuid() });
+            var result = await _mediator.Send(new GetUserItemsQuery { UserId = id });
 
             return Ok(result);
         }
 
         [HttpPost("{id}/item")]
-        public async Task<IActionResult> CreateItem()
+        public async Task<IActionResult> CreateItem(Guid id)
         {
-            var result = await _mediator.Send(new CreateItemCommand { UserId = Guid.NewGuid() });
+            var result = await _mediator.Send(new CreateItemCommand { UserId = id });
 
             return Ok(result);
         }

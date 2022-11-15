@@ -2,7 +2,7 @@
 
 namespace Collections.Domain.Entities;
 
-public class Tag: Entity
+public class Tag : Entity
 {
     public string Name { get; private set; }
     public string Value { get; private set; }

@@ -2,7 +2,7 @@
 
 namespace Collections.Domain.Entities;
 
-public class User: Entity
+public class User : Entity
 {
     private List<Item> _items = new List<Item>();
 

@@ -1,6 +1,6 @@
 ﻿namespace Collections.Domain.Entities;
 
-public class Item: Entity
+public class Item : Entity
 {
     private List<Tag> _tags = new List<Tag>();
 
