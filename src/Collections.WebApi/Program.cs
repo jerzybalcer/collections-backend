@@ -17,6 +17,10 @@ builder.Services.AddCors(options =>
                       {
                           builder.WithOrigins("http://localhost:3000",
                                               "http://localhost:7185");
+                          builder.WithOrigins("http://localhost:7185",
+                                              "http://localhost:3000");
+                          builder.WithOrigins().AllowAnyOrigin();
+                          builder.WithHeaders().AllowAnyHeader();
                       });
 });
 
