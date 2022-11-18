@@ -29,7 +29,7 @@ public class CreateItemCommand : IRequest<Guid>
                 throw new NotFoundException<User>(request.UserId);
             }
 
-            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, DateTime.Now, "imgUrl", user);
+            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, "imgUrl", request.NewItemData.IsFavourite, user);
 
             foreach(var requestedTag in request.NewItemData.Tags)
             {
@@ -48,6 +48,7 @@ public class CreateItemCommand : IRequest<Guid>
                 item.AddTag(tagToAdd);
             }
 
+            _dbContext.Items.Add(item);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return item.Id;
@@ -59,8 +60,8 @@ public class NewItemDto
 {
     public string Name { get; set; }
     public string Description { get; set; }
-    public DateTime AddedDate { get; set; }
     public DateTime AcquiredDate { get; set; }
+    public bool IsFavourite { get; set; }
     public List<AttachedTagDto> Tags { get; set; }
 
 }

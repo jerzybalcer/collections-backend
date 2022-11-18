@@ -13,18 +13,19 @@ public class Item : Entity
     public User User { get; private set; }
     public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
 
-    private Item(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl)
+    private Item(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, bool isFavourite)
     {
         Name = name;
         Description = description;
         AddedDate = addedDate;
         AcquiredDate = acquiredDate;
-        IsFavourite = false;
+        IsFavourite = isFavourite;
+        ImageUrl = imageUrl;
     }
 
-    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, User user)
+    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, bool isFavourite, User user)
     {
-        return new Item(name, description, addedDate, acquiredDate, imageUrl) { User = user };
+        return new Item(name, description, addedDate, acquiredDate, imageUrl, isFavourite) { User = user };
     }
 
     public void SetIsFavourite(bool isFavourite)

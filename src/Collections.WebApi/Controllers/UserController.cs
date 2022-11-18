@@ -25,9 +25,9 @@ namespace Collections.WebApi.Controllers
         }
 
         [HttpPost("{id}/item")]
-        public async Task<IActionResult> CreateItem(Guid id)
+        public async Task<IActionResult> CreateItem(Guid id, [FromBody] NewItemDto newItem)
         {
-            var result = await _mediator.Send(new CreateItemCommand { UserId = id });
+            var result = await _mediator.Send(new CreateItemCommand { UserId = id, NewItemData = newItem });
 
             return Ok(result);
         }

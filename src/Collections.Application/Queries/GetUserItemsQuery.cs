@@ -34,6 +34,8 @@ public class GetUserItemsQuery : IRequest<List<UserItemDto>>
                     { 
                         Id = item.Id,
                         Name = item.Name,
+                        AddedDate = item.AddedDate,
+                        AcquiredDate = item.AcquiredDate,
                     }
                 )
                 .ToListAsync();
@@ -47,4 +49,6 @@ public class UserItemDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+    public DateTime AddedDate { get; set; }
+    public DateTime AcquiredDate { get; set; }
 }
