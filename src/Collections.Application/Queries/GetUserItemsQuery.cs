@@ -38,6 +38,7 @@ public class GetUserItemsQuery : IRequest<List<UserItemDto>>
                         AcquiredDate = item.AcquiredDate,
                     }
                 )
+                .OrderByDescending(item => item.AddedDate)
                 .ToListAsync();
 
             return items;
