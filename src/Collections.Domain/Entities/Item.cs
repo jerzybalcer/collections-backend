@@ -2,7 +2,7 @@
 
 public class Item : Entity
 {
-    private List<Tag> _tags = new List<Tag>();
+    private List<TagValue> _tagsValues = new List<TagValue>();
 
     public string Name { get; private set; }
     public string? Description { get; private set; }
@@ -11,7 +11,8 @@ public class Item : Entity
     public bool IsFavourite { get; private set; }
     public string ImageUrl { get; private set; }
     public User User { get; private set; }
-    public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
+    public Category Category { get; private set; }
+    public IReadOnlyCollection<TagValue> TagsValues => _tagsValues.AsReadOnly();
 
     private Item(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, bool isFavourite)
     {
@@ -23,18 +24,13 @@ public class Item : Entity
         ImageUrl = imageUrl;
     }
 
-    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, bool isFavourite, User user)
+    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, bool isFavourite, Category category, User user)
     {
-        return new Item(name, description, addedDate, acquiredDate, imageUrl, isFavourite) { User = user };
+        return new Item(name, description, addedDate, acquiredDate, imageUrl, isFavourite) { Category = category, User = user };
     }
 
     public void SetIsFavourite(bool isFavourite)
     {
         IsFavourite = isFavourite;
-    }
-
-    public void AddTag(Tag tag)
-    {
-        _tags.Add(tag);
     }
 }

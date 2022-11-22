@@ -29,29 +29,14 @@ public class CreateItemCommand : IRequest<Guid>
                 throw new NotFoundException<User>(request.UserId);
             }
 
-            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, "imgUrl", request.NewItemData.IsFavourite, user);
+            //var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, "imgUrl", request.NewItemData.IsFavourite, user);
 
-            foreach(var requestedTag in request.NewItemData.Tags)
-            {
-                Tag? tagToAdd = null;
+            //_dbContext.Items.Add(item);
+            //await _dbContext.SaveChangesAsync(cancellationToken);
 
-                if(requestedTag.Id != null)
-                {
-                    tagToAdd = await _dbContext.Tags.FirstOrDefaultAsync(dbTag => dbTag.Id == requestedTag.Id);
-                }
+            //return item.Id;
 
-                if (requestedTag.Id == null || tagToAdd == null)
-                {
-                    tagToAdd = Tag.Create(requestedTag.Name, requestedTag.Value, requestedTag.Color);
-                }
-
-                item.AddTag(tagToAdd);
-            }
-
-            _dbContext.Items.Add(item);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
-            return item.Id;
+            return Guid.NewGuid();
         }
     }
 }

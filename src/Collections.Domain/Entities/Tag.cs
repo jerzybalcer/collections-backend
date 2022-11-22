@@ -4,32 +4,34 @@ namespace Collections.Domain.Entities;
 
 public class Tag : Entity
 {
-    public string Name { get; private set; }
-    public string Value { get; private set; }
-    public string Color { get; private set; }
+    private List<TagValue> _values = new List<TagValue>();
+    private List<Category> _categories = new List<Category>();
 
-    private Tag(string name, string value, string color)
+    public string Name { get; private set; }
+    public IReadOnlyCollection<TagValue> Values => _values.AsReadOnly();
+    public IReadOnlyCollection<Category> Categories => _categories.AsReadOnly();
+
+    private Tag(string name)
     {
         Name = name;
-        Value = value;
-        Color = color;
     }
 
-    public static Tag Create(string name, string value, string color)
+    public static Tag Create(string name, Category category)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new NoPropertyValueException<Tag>(nameof(name));
         }
-        if (string.IsNullOrWhiteSpace(value))
+
+        if (category == null)
         {
-            throw new NoPropertyValueException<Tag>(nameof(value));
-        }
-        if (string.IsNullOrWhiteSpace(color))
-        {
-            throw new NoPropertyValueException<Tag>(nameof(color));
+            throw new NoPropertyValueException<Tag>(nameof(category));
         }
 
-        return new Tag(name, value, color);
+        var tag = new Tag(name);
+        
+        tag._categories.Add(category);
+
+        return tag;
     }
 }
