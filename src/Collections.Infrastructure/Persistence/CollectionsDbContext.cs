@@ -8,6 +8,7 @@ public class CollectionsDbContext : DbContext, ICollectionsDbContext
 {
     public DbSet<Item> Items { get; set; }
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<Category> Categories { get; set; }
     public DbSet<User> Users { get; set; }
 
     public CollectionsDbContext(DbContextOptions<CollectionsDbContext> options)

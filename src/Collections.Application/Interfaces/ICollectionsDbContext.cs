@@ -7,6 +7,7 @@ public interface ICollectionsDbContext
 {
     DbSet<Item> Items { get; }
     DbSet<Tag> Tags { get; }
+    DbSet<Category> Categories { get; }
     DbSet<User> Users { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
