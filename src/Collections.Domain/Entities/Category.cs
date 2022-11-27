@@ -19,7 +19,7 @@ public class Category : Entity
         Color = color;
     }
 
-    public static Category Create(string name, string color, List<Tag> tags)
+    public static Category Create(string name, string color)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -33,8 +33,11 @@ public class Category : Entity
 
         var category = new Category(name, color);
 
-        category._tags.AddRange(tags);
-
         return category;
+    }
+
+    public void AddTags(List<Tag> tags)
+    {
+        _tags.AddRange(tags);
     }
 }

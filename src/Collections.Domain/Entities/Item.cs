@@ -33,4 +33,9 @@ public class Item : Entity
     {
         IsFavourite = isFavourite;
     }
+
+    public void AddTagValues(List<TagValue> tagValues)
+    {
+        _tagsValues.AddRange(tagValues);
+    }
 }

@@ -25,7 +25,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("{id}/item")]
-    public async Task<IActionResult> CreateItem(Guid id, [FromBody] NewItemDto newItem)
+    public async Task<IActionResult> CreateItem(Guid id, [FromBody] NewItem newItem)
     {
         var result = await _mediator.Send(new CreateItemCommand { UserId = id, NewItemData = newItem });
 
