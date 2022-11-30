@@ -42,7 +42,7 @@ public class CreateItemCommand : IRequest<Guid>
 
             category.AddTags(newTags);
 
-            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, "", request.NewItemData.IsFavourite, category, user);
+            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, "", (bool)request.NewItemData.IsFavourite!, category, user);
 
             var tagsValues = tags.Select(tag => 
                 TagValue.Create(tag, item, request.NewItemData.Tags.Single(t => t.Name == tag.Name).Value)
@@ -81,9 +81,9 @@ public class CreateItemCommand : IRequest<Guid>
 public class NewItem
 {
     public string Name { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public DateTime AcquiredDate { get; set; }
-    public bool IsFavourite { get; set; }
+    public bool? IsFavourite { get; set; } = false;
     public List<NewTagValue> Tags { get; set; }
     public NewItemCategory Category { get; set; }
 
