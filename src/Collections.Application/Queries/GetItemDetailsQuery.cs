@@ -21,7 +21,12 @@ public class GetItemDetailsQuery : IRequest<ItemDetailsDto>
 
         public async Task<ItemDetailsDto> Handle(GetItemDetailsQuery request, CancellationToken cancellationToken)
         {
-            var item = await _dbContext.Items.SingleOrDefaultAsync(item => item.Id == request.ItemId);
+            var item = await _dbContext.Items
+                .Include(t => t.TagsValues)
+                    .ThenInclude(tv => tv.Tag)
+                .Include(i => i.Category)
+                    .ThenInclude(c => c.Tags)
+                .SingleOrDefaultAsync(item => item.Id == request.ItemId);
 
             if(item == null)
             {
@@ -36,6 +41,8 @@ public class GetItemDetailsQuery : IRequest<ItemDetailsDto>
                 AcquiredDate = item.AcquiredDate,
                 IsFavourite = item.IsFavourite,
                 ImageUrl = item.ImageUrl,
+                TagValues = item.TagsValues.Select(tv => new TagValueDto { Name = tv.Tag.Name, Value = tv.Value }).ToList(),
+                Category = new ItemDetailsCategoryDto { Name = item.Category.Name, Color = item.Category.Color, Tags = item.Category.Tags.Select(t => t.Name).ToList() },
             };
 
             return itemDetails;
@@ -51,4 +58,19 @@ public class ItemDetailsDto
     public DateTime AcquiredDate { get; set; }
     public bool IsFavourite { get; set; }
     public string ImageUrl { get; set; }
+    public List<TagValueDto> TagValues { get; set; }
+    public ItemDetailsCategoryDto Category { get; set; }
+}
+
+public class ItemDetailsCategoryDto
+{
+    public string Name { get; set; }
+    public string Color { get; set; }
+    public List<string> Tags { get; set; }
+}
+
+public class TagValueDto
+{
+    public string Name { get; set; }
+    public string Value { get; set; }
 }
