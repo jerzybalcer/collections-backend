@@ -29,9 +29,9 @@ public class Item : Entity
         return new Item(name, description, addedDate, acquiredDate, imageUrl, isFavourite) { Category = category, User = user };
     }
 
-    public void SetIsFavourite(bool isFavourite)
+    public void ToggleIsFavourite()
     {
-        IsFavourite = isFavourite;
+        IsFavourite = IsFavourite ? false : true;
     }
 
     public void AddTagValues(List<TagValue> tagValues)

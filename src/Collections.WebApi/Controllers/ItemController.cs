@@ -31,4 +31,12 @@ public class ItemController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPut("{id}/favourite")]
+    public async Task<IActionResult> ToggleIsFavourite(Guid id)
+    {
+        var result = await _mediator.Send(new ToggleIsFavouriteCommand { ItemId = id });
+
+        return Ok(result);
+    }
 }
