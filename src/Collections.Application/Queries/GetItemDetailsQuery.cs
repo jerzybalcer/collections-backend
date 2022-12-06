@@ -13,10 +13,12 @@ public class GetItemDetailsQuery : IRequest<ItemDetailsDto>
     internal class GetItemDetailsQueryHandler : IRequestHandler<GetItemDetailsQuery, ItemDetailsDto>
     {
         private readonly ICollectionsDbContext _dbContext;
+        private readonly IImageStorageService _imageStorageService;
 
-        public GetItemDetailsQueryHandler(ICollectionsDbContext dbContext)
+        public GetItemDetailsQueryHandler(ICollectionsDbContext dbContext, IImageStorageService imageStorageService)
         {
             _dbContext = dbContext;
+            _imageStorageService = imageStorageService;
         }
 
         public async Task<ItemDetailsDto> Handle(GetItemDetailsQuery request, CancellationToken cancellationToken)
@@ -33,6 +35,8 @@ public class GetItemDetailsQuery : IRequest<ItemDetailsDto>
                 throw new NotFoundException<Item>(request.ItemId);
             }
 
+            var imageUrl = await _imageStorageService.GetImageUrlAsync(request.ItemId);
+
             var itemDetails = new ItemDetailsDto
             {
                 Name = item.Name,
@@ -40,7 +44,7 @@ public class GetItemDetailsQuery : IRequest<ItemDetailsDto>
                 AddedDate = item.AddedDate,
                 AcquiredDate = item.AcquiredDate,
                 IsFavourite = item.IsFavourite,
-                ImageUrl = item.ImageUrl,
+                ImageUrl = imageUrl,
                 TagValues = item.TagsValues.Select(tv => new TagValueDto { Name = tv.Tag.Name, Value = tv.Value }).ToList(),
                 Category = new ItemDetailsCategoryDto { Name = item.Category.Name, Color = item.Category.Color, Tags = item.Category.Tags.Select(t => t.Name).ToList() },
             };

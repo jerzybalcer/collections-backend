@@ -9,24 +9,22 @@ public class Item : Entity
     public DateTime AddedDate { get; private set; }
     public DateTime AcquiredDate { get; private set; }
     public bool IsFavourite { get; private set; }
-    public string ImageUrl { get; private set; }
     public User User { get; private set; }
     public Category Category { get; private set; }
     public IReadOnlyCollection<TagValue> TagsValues => _tagsValues.AsReadOnly();
 
-    private Item(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, bool isFavourite)
+    private Item(string name, string description, DateTime addedDate, DateTime acquiredDate, bool isFavourite)
     {
         Name = name;
         Description = description;
         AddedDate = addedDate;
         AcquiredDate = acquiredDate;
         IsFavourite = isFavourite;
-        ImageUrl = imageUrl;
     }
 
-    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, string imageUrl, bool isFavourite, Category category, User user)
+    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, bool isFavourite, Category category, User user)
     {
-        return new Item(name, description, addedDate, acquiredDate, imageUrl, isFavourite) { Category = category, User = user };
+        return new Item(name, description, addedDate, acquiredDate, isFavourite) { Category = category, User = user };
     }
 
     public void ToggleIsFavourite()

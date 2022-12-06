@@ -14,10 +14,12 @@ public class CreateItemCommand : IRequest<Guid>
     internal class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Guid>
     {
         private readonly ICollectionsDbContext _dbContext;
+        private readonly IImageStorageService _imageStorageService;
 
-        public CreateItemCommandHandler(ICollectionsDbContext dbContext)
+        public CreateItemCommandHandler(ICollectionsDbContext dbContext, IImageStorageService imageStorageService)
         {
             _dbContext = dbContext;
+            _imageStorageService = imageStorageService;
         }
 
         public async Task<Guid> Handle(CreateItemCommand request, CancellationToken cancellationToken)
@@ -42,7 +44,7 @@ public class CreateItemCommand : IRequest<Guid>
 
             category.AddTags(newTags);
 
-            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, "", (bool)request.NewItemData.IsFavourite!, category, user);
+            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, (bool)request.NewItemData.IsFavourite!, category, user);
 
             var tagsValues = tags.Select(tag => 
                 TagValue.Create(tag, item, request.NewItemData.Tags.Single(t => t.Name == tag.Name).Value)
@@ -53,6 +55,8 @@ public class CreateItemCommand : IRequest<Guid>
             _dbContext.Items.Add(item);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            await _imageStorageService.UploadImageAsync(item.Id, request.NewItemData.ImageBase64);
 
             return item.Id;
         }
@@ -84,6 +88,7 @@ public class NewItem
     public string? Description { get; set; }
     public DateTime AcquiredDate { get; set; }
     public bool? IsFavourite { get; set; } = false;
+    public string ImageBase64 { get; set; }
     public List<NewTagValue> Tags { get; set; }
     public NewItemCategory Category { get; set; }
 
