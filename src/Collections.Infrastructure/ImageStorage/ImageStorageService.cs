@@ -30,14 +30,14 @@ public class ImageStorageService : IImageStorageService
 
         if (!await container.ExistsAsync())
         {
-            throw new Exception($"Cannot find image container");
+            return string.Empty;
         }
 
         var blobClient = container.GetBlobClient(itemId.ToString());
 
         if(!await blobClient.ExistsAsync())
         {
-            throw new Exception($"Cannot find any image for this item");
+            return string.Empty;
         }
 
         if (!blobClient.CanGenerateSasUri)
