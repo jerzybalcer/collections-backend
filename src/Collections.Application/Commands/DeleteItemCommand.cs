@@ -13,10 +13,12 @@ public class DeleteItemCommand : IRequest<Unit>
     internal class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, Unit>
     {
         private readonly ICollectionsDbContext _dbContext;
+        private readonly IImageStorageService _imageStorageService;
 
-        public DeleteItemCommandHandler(ICollectionsDbContext dbContext)
+        public DeleteItemCommandHandler(ICollectionsDbContext dbContext, IImageStorageService imageStorageService)
         {
             _dbContext = dbContext;
+            _imageStorageService = imageStorageService;
         }
 
         public async Task<Unit> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
@@ -29,7 +31,10 @@ public class DeleteItemCommand : IRequest<Unit>
             }
 
             _dbContext.Items.Remove(item);
+
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            await _imageStorageService.DeleteImageAsync(request.ItemId);
 
             return Unit.Value;
         }

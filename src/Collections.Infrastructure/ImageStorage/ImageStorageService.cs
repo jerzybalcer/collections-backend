@@ -28,16 +28,21 @@ public class ImageStorageService : IImageStorageService
     {
         var container = _blobClient.GetBlobContainerClient(ContainerName);
 
+        if (!await container.ExistsAsync())
+        {
+            throw new Exception($"Cannot find image container");
+        }
+
         var blobClient = container.GetBlobClient(itemId.ToString());
 
         if(!await blobClient.ExistsAsync())
         {
-            return String.Empty;
+            throw new Exception($"Cannot find any image for this item");
         }
 
         if (!blobClient.CanGenerateSasUri)
         {
-            return String.Empty;
+            throw new Exception($"Cannot obtain image URL");
         }
 
         var sasBuilder = new BlobSasBuilder
@@ -53,5 +58,19 @@ public class ImageStorageService : IImageStorageService
         var sasUri = blobClient.GenerateSasUri(sasBuilder);
 
         return sasUri.ToString();
+    }
+
+    public async Task DeleteImageAsync(Guid itemId)
+    {
+        var container = _blobClient.GetBlobContainerClient(ContainerName);
+
+        if (!await container.ExistsAsync())
+        {
+            throw new Exception($"Cannot find image container");
+        }
+
+        var blobClient = container.GetBlobClient(itemId.ToString());
+
+        await blobClient.DeleteIfExistsAsync();
     }
 }
