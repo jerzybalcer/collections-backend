@@ -32,4 +32,9 @@ public class TagValue : Entity
 
         return new TagValue(value) { Tag = tag, Item = item };
     }
+
+    public void EditValue(string newValue)
+    {
+        Value = newValue;
+    }
 }

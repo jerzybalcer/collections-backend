@@ -36,4 +36,22 @@ public class Item : Entity
     {
         _tagsValues.AddRange(tagValues);
     }
+
+    public void Edit(string newName, string? newDescription, DateTime? newAcquiredDate)
+    {
+        if(newName != null)
+        {
+            Name = newName;
+        }
+
+        if(newDescription != null)
+        {
+            Description = newDescription;
+        }
+
+        if(newAcquiredDate is not null)
+        {
+            AcquiredDate = (DateTime)newAcquiredDate;
+        }  
+    }
 }

@@ -39,4 +39,12 @@ public class ItemController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> EditItem(Guid id, [FromBody] EditedItem editedItem)
+    {
+        var result = await _mediator.Send(new EditItemCommand { ItemId = id, EditedItem = editedItem });
+
+        return Ok(result);
+    }
 }
