@@ -24,6 +24,14 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{id}/items/favourite")]
+    public async Task<IActionResult> GetUserFavouriteItems(Guid id)
+    {
+        var result = await _mediator.Send(new GetUserFavouriteItemsQuery { UserId = id });
+
+        return Ok(result);
+    }
+
     [HttpPost("{id}/item")]
     public async Task<IActionResult> CreateItem(Guid id, [FromBody] NewItem newItem)
     {
