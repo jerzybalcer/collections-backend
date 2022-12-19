@@ -21,7 +21,9 @@ public class DeleteCategoryCommand : IRequest<Unit>
 
         public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await _dbContext.Categories.SingleOrDefaultAsync(category => category.Id == request.CategoryId);
+            var category = await _dbContext.Categories
+                .Include(c => c.Tags)
+                .SingleOrDefaultAsync(category => category.Id == request.CategoryId);
 
             if (category == null)
             {
@@ -31,6 +33,19 @@ public class DeleteCategoryCommand : IRequest<Unit>
             if (category.Items.Any())
             {
                 throw new CategoryNotEmptyException(request.CategoryId);
+            }
+
+            foreach (var tag in category.Tags)
+            {
+                var categoriesCount = await _dbContext.Categories
+                    .Include(c => c.Tags)
+                    .Where(c => c.Tags.Any(t => t.Id == tag.Id))
+                    .CountAsync();
+
+                if(categoriesCount == 1)
+                {
+                    _dbContext.Tags.Remove(tag);
+                }
             }
 
             _dbContext.Categories.Remove(category);

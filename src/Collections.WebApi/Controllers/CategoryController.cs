@@ -55,4 +55,12 @@ public class CategoryController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPost("category")]
+    public async Task<IActionResult> CreateCategory([FromBody] NewCategory newCategory)
+    {
+        var result = await _mediator.Send(new CreateCategoryCommand { NewCategory = newCategory });
+
+        return Ok(result);
+    }
 }

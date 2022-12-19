@@ -33,7 +33,7 @@ public class EditCategoryCommand : IRequest<Guid>
 
             category.Edit(request.EditedCategory.Name, request.EditedCategory.Color);
 
-            DeleteTags(request.EditedCategory.Tags, category);
+            await DeleteTags(request.EditedCategory.Tags, category);
             await AddTags(request.EditedCategory.Tags, category);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -60,7 +60,7 @@ public class EditCategoryCommand : IRequest<Guid>
             }
         }
 
-        private async void DeleteTags(List<string> editedTags, Category category)
+        private async Task DeleteTags(List<string> editedTags, Category category)
         {
             var tagsToRemove = new List<Tag>();
             var tagsWihoutCategory = new List<Tag>();
