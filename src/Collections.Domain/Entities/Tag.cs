@@ -34,4 +34,9 @@ public class Tag : Entity
 
         return tag;
     }
+
+    public void SetName(string name)
+    {
+        Name = name;
+    }
 }

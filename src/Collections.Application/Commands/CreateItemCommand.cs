@@ -56,7 +56,10 @@ public class CreateItemCommand : IRequest<Guid>
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            await _imageStorageService.UploadImageAsync(item.Id, request.NewItemData.ImageBase64);
+            if(request.NewItemData.ImageBase64 != null)
+            {
+                await _imageStorageService.UploadImageAsync(item.Id, request.NewItemData.ImageBase64);
+            }
 
             return item.Id;
         }
@@ -88,7 +91,7 @@ public class NewItem
     public string? Description { get; set; }
     public DateTime AcquiredDate { get; set; }
     public bool? IsFavourite { get; set; } = false;
-    public string ImageBase64 { get; set; }
+    public string? ImageBase64 { get; set; }
     public List<NewTagValue> Tags { get; set; }
     public NewItemCategory Category { get; set; }
 

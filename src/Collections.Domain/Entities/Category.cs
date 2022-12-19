@@ -40,4 +40,25 @@ public class Category : Entity
     {
         _tags.AddRange(tags);
     }
+
+    public void RemoveTags(List<Tag> tags)
+    {
+        foreach (var tag in tags)
+        {
+            _tags.Remove(tag);
+        }
+    }
+
+    public void Edit(string? name, string? color)
+    {
+        if(name != null)
+        {
+            Name = name;
+        }
+
+        if (color != null)
+        {
+            Color = color;
+        }
+    }
 }

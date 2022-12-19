@@ -1,4 +1,5 @@
-﻿using Collections.Application.Queries;
+﻿using Collections.Application.Commands;
+using Collections.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,30 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetTagsForCategory(Guid id)
     {
         var result = await _mediator.Send(new GetTagsForCategoryQuery { CategoryId = id });
+
+        return Ok(result);
+    }
+
+    [HttpGet("category/{id}")]
+    public async Task<IActionResult> GetCategoryDetails(Guid id)
+    {
+        var result = await _mediator.Send(new GetCategoryDetailsQuery { CategoryId = id });
+
+        return Ok(result);
+    }
+
+    [HttpDelete("category/{id}")]
+    public async Task<IActionResult> DeleteCategory(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteCategoryCommand { CategoryId = id });
+
+        return Ok(result);
+    }
+
+    [HttpPut("category/{id}")]
+    public async Task<IActionResult> EditCategory(Guid id, [FromBody] EditedCategory editedCategory)
+    {
+        var result = await _mediator.Send(new EditCategoryCommand { CategoryId = id, EditedCategory = editedCategory });
 
         return Ok(result);
     }
