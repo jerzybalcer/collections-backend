@@ -30,6 +30,8 @@ public class GetUserItemsQuery : IRequest<List<UserItemDto>>
 
             var items = await _dbContext.Items
                 .Include(i => i.Category)
+                .Include(i => i.TagsValues)
+                    .ThenInclude(tv => tv.Tag)
                 .Where(item => item.User.Id == user.Id)
                 .Select(item => new UserItemDto 
                     { 
@@ -39,6 +41,7 @@ public class GetUserItemsQuery : IRequest<List<UserItemDto>>
                         AcquiredDate = item.AcquiredDate,
                         IsFavourite = item.IsFavourite,
                         Category = new UserItemCategory { Name = item.Category.Name, Color = item.Category.Color },
+                        Tags = item.TagsValues.Select(tv => tv.Tag.Name).ToList(),
                     }
                 )
                 .OrderByDescending(item => item.AddedDate)
@@ -57,6 +60,7 @@ public class UserItemDto
     public DateTime AcquiredDate { get; set; }
     public bool IsFavourite { get; set; }
     public UserItemCategory Category { get; set; }
+    public List<string> Tags { get; set; }
 }
 
 public class UserItemCategory
