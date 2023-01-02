@@ -40,9 +40,7 @@ public class CreateItemCommand : IRequest<Guid>
 
             var tags = await GetTags(request.NewItemData.Tags.Select(t => t.Name).ToList(), category, cancellationToken);
 
-            var newTags = tags.Where(t => t.Id == Guid.Empty).ToList();
-
-            category.AddTags(newTags);
+            category.AddTags(tags);
 
             var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, (bool)request.NewItemData.IsFavourite!, category, user);
 
