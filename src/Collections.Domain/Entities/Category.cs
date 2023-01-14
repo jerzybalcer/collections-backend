@@ -38,7 +38,13 @@ public class Category : Entity
 
     public void AddTags(List<Tag> tags)
     {
-        _tags.AddRange(tags);
+        foreach(var tag in tags)
+        {
+            if(!_tags.Any(t => t.Name == tag.Name))
+            {
+                _tags.Add(tag);
+            }
+        }
     }
 
     public void RemoveTags(List<Tag> tags)

@@ -22,7 +22,9 @@ public class CreateItemCommand : IRequest<Guid>
 
         public async Task<Guid> Handle(CreateItemCommand request, CancellationToken cancellationToken)
         {
-            var category = await _dbContext.Categories.SingleOrDefaultAsync(category => category.Id == request.NewItemData.Category.Id);
+            var category = await _dbContext.Categories
+                .Include(c => c.Tags)
+                .SingleOrDefaultAsync(category => category.Id == request.NewItemData.Category.Id);
 
             if (category == null)
             {
@@ -31,7 +33,10 @@ public class CreateItemCommand : IRequest<Guid>
 
             var tags = await GetTags(request.NewItemData.Tags.Select(t => t.Name).ToList(), category, cancellationToken);
 
-            category.AddTags(tags);
+            if(category.Id == Guid.Empty)
+            {
+                category.AddTags(tags);
+            }
 
             var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, (bool)request.NewItemData.IsFavourite!, category);
 
