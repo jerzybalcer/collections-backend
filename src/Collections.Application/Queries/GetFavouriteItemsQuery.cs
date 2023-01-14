@@ -6,11 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Collections.Application.Queries;
 
-public class GetUserFavouriteItemsQuery : IRequest<List<UserItemDto>>
+public class GetFavouriteItemsQuery : IRequest<List<UserItemDto>>
 {
-    public Guid UserId { get; set; }
-
-    internal class GetUserFavouriteItemsQueryHandler : IRequestHandler<GetUserFavouriteItemsQuery, List<UserItemDto>>
+    internal class GetUserFavouriteItemsQueryHandler : IRequestHandler<GetFavouriteItemsQuery, List<UserItemDto>>
     {
         private readonly ICollectionsDbContext _dbContext;
 
@@ -19,20 +17,13 @@ public class GetUserFavouriteItemsQuery : IRequest<List<UserItemDto>>
             _dbContext = dbContext;
         }
 
-        public async Task<List<UserItemDto>> Handle(GetUserFavouriteItemsQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserItemDto>> Handle(GetFavouriteItemsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.UserId);
-
-            if (user == null)
-            {
-                throw new NotFoundException<User>(request.UserId);
-            }
-
             var items = await _dbContext.Items
                 .Include(i => i.Category)
                 .Include(i => i.TagsValues)
                     .ThenInclude(tv => tv.Tag)
-                .Where(item => item.User.Id == user.Id && item.IsFavourite)
+                .Where(item => item.IsFavourite)
                 .Select(item => new UserItemDto
                 {
                     Id = item.Id,

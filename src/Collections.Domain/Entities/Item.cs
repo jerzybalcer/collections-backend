@@ -9,7 +9,6 @@ public class Item : Entity
     public DateTime AddedDate { get; private set; }
     public DateTime AcquiredDate { get; private set; }
     public bool IsFavourite { get; private set; }
-    public User User { get; private set; }
     public Category Category { get; private set; }
     public IReadOnlyCollection<TagValue> TagsValues => _tagsValues.AsReadOnly();
 
@@ -22,9 +21,9 @@ public class Item : Entity
         IsFavourite = isFavourite;
     }
 
-    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, bool isFavourite, Category category, User user)
+    public static Item Create(string name, string description, DateTime addedDate, DateTime acquiredDate, bool isFavourite, Category category)
     {
-        return new Item(name, description, addedDate, acquiredDate, isFavourite) { Category = category, User = user };
+        return new Item(name, description, addedDate, acquiredDate, isFavourite) { Category = category };
     }
 
     public void ToggleIsFavourite()

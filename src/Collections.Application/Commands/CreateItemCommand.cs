@@ -1,6 +1,5 @@
 ﻿using Collections.Application.Interfaces;
 using Collections.Domain.Entities;
-using Collections.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +7,6 @@ namespace Collections.Application.Commands;
 
 public class CreateItemCommand : IRequest<Guid>
 {
-    public Guid UserId { get; set; }
     public NewItem NewItemData { get; set; }
 
     internal class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Guid>
@@ -24,13 +22,6 @@ public class CreateItemCommand : IRequest<Guid>
 
         public async Task<Guid> Handle(CreateItemCommand request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.UserId);
-
-            if (user == null)
-            {
-                throw new NotFoundException<User>(request.UserId);
-            }
-
             var category = await _dbContext.Categories.SingleOrDefaultAsync(category => category.Id == request.NewItemData.Category.Id);
 
             if (category == null)
@@ -42,7 +33,7 @@ public class CreateItemCommand : IRequest<Guid>
 
             category.AddTags(tags);
 
-            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, (bool)request.NewItemData.IsFavourite!, category, user);
+            var item = Item.Create(request.NewItemData.Name, request.NewItemData.Description, DateTime.Now, request.NewItemData.AcquiredDate, (bool)request.NewItemData.IsFavourite!, category);
 
             var tagsValues = tags.Select(tag => 
                 TagValue.Create(tag, item, request.NewItemData.Tags.Single(t => t.Name == tag.Name).Value)

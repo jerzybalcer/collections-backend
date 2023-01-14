@@ -1,16 +1,12 @@
 ﻿using Collections.Application.Interfaces;
-using Collections.Domain.Entities;
-using Collections.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Collections.Application.Queries;
 
-public class GetUserItemsQuery : IRequest<List<UserItemDto>>
+public class GetItemsQuery : IRequest<List<UserItemDto>>
 {
-    public Guid UserId { get; set; }
-
-    internal class GetUserItemsQueryHandler : IRequestHandler<GetUserItemsQuery, List<UserItemDto>>
+    internal class GetUserItemsQueryHandler : IRequestHandler<GetItemsQuery, List<UserItemDto>>
     {
         private readonly ICollectionsDbContext _dbContext;
 
@@ -19,21 +15,13 @@ public class GetUserItemsQuery : IRequest<List<UserItemDto>>
             _dbContext = dbContext;
         }
 
-        public async Task<List<UserItemDto>> Handle(GetUserItemsQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(user => user.Id == request.UserId);
-
-            if(user == null)
-            {
-                throw new NotFoundException<User>(request.UserId);
-            }
-
             var items = await _dbContext.Items
                 .Include(i => i.Category)
                 .Include(i => i.TagsValues)
                     .ThenInclude(tv => tv.Tag)
-                .Where(item => item.User.Id == user.Id)
-                .Select(item => new UserItemDto 
+                .Select(item => new UserItemDto
                     { 
                         Id = item.Id,
                         Name = item.Name,
