@@ -10,7 +10,7 @@ public class DeleteCategoryCommand : IRequest<Unit>
 {
     public Guid CategoryId { get; set; }
 
-    internal class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Unit>
+    public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Unit>
     {
         private readonly ICollectionsDbContext _dbContext;
 

@@ -3,17 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections.Domain", "src\Collections.Domain\Collections.Domain.csproj", "{74124208-911C-4D8D-8158-26344498A507}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collections.Domain", "src\Collections.Domain\Collections.Domain.csproj", "{74124208-911C-4D8D-8158-26344498A507}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B4C82BEE-DB28-43C0-9F4A-B78D57BD176E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9AF657CA-1778-4CC3-A9A3-9837DAF2D2E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections.WebApi", "src\Collections.WebApi\Collections.WebApi.csproj", "{1FA2B1A8-FB02-4011-9408-42F9027584F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collections.WebApi", "src\Collections.WebApi\Collections.WebApi.csproj", "{1FA2B1A8-FB02-4011-9408-42F9027584F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections.Application", "src\Collections.Application\Collections.Application.csproj", "{6B87C255-ADE5-4575-929C-FDB5D695AB0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collections.Application", "src\Collections.Application\Collections.Application.csproj", "{6B87C255-ADE5-4575-929C-FDB5D695AB0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections.Infrastructure", "src\Collections.Infrastructure\Collections.Infrastructure.csproj", "{D0FB42DC-767E-462F-86D8-A7A4FACC6BA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collections.Infrastructure", "src\Collections.Infrastructure\Collections.Infrastructure.csproj", "{D0FB42DC-767E-462F-86D8-A7A4FACC6BA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections.Tests", "tests\Collections.Tests\Collections.Tests.csproj", "{3C4B4ED5-74D3-4C6E-A729-1820603087B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60E52A89-28C4-4922-ADBA-02B78E219E59}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +44,10 @@ Global
 		{D0FB42DC-767E-462F-86D8-A7A4FACC6BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0FB42DC-767E-462F-86D8-A7A4FACC6BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0FB42DC-767E-462F-86D8-A7A4FACC6BA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C4B4ED5-74D3-4C6E-A729-1820603087B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C4B4ED5-74D3-4C6E-A729-1820603087B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C4B4ED5-74D3-4C6E-A729-1820603087B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C4B4ED5-74D3-4C6E-A729-1820603087B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +57,7 @@ Global
 		{1FA2B1A8-FB02-4011-9408-42F9027584F4} = {B4C82BEE-DB28-43C0-9F4A-B78D57BD176E}
 		{6B87C255-ADE5-4575-929C-FDB5D695AB0E} = {B4C82BEE-DB28-43C0-9F4A-B78D57BD176E}
 		{D0FB42DC-767E-462F-86D8-A7A4FACC6BA0} = {B4C82BEE-DB28-43C0-9F4A-B78D57BD176E}
+		{3C4B4ED5-74D3-4C6E-A729-1820603087B8} = {9AF657CA-1778-4CC3-A9A3-9837DAF2D2E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08DF2111-E592-435D-A0C4-2102EADAC91F}

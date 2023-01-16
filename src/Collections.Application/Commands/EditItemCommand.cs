@@ -11,7 +11,7 @@ public class EditItemCommand : IRequest<Guid>
     public Guid ItemId { get; set; }
     public EditedItem EditedItem { get; set; }
 
-    internal class EditItemCommandHandler : IRequestHandler<EditItemCommand, Guid>
+    public class EditItemCommandHandler : IRequestHandler<EditItemCommand, Guid>
     {
         private readonly ICollectionsDbContext _dbContext;
         private readonly IImageStorageService _imageStorageService;

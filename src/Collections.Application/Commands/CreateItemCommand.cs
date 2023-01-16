@@ -9,7 +9,7 @@ public class CreateItemCommand : IRequest<Guid>
 {
     public NewItem NewItemData { get; set; }
 
-    internal class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Guid>
+    public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, Guid>
     {
         private readonly ICollectionsDbContext _dbContext;
         private readonly IImageStorageService _imageStorageService;

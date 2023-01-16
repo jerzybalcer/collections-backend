@@ -11,7 +11,7 @@ public class EditCategoryCommand : IRequest<Guid>
     public Guid CategoryId { get; set; }
     public EditedCategory EditedCategory { get; set; }
 
-    internal class EditCategoryCommandHandler : IRequestHandler<EditCategoryCommand, Guid>
+    public class EditCategoryCommandHandler : IRequestHandler<EditCategoryCommand, Guid>
     {
         private readonly ICollectionsDbContext _dbContext;
 
