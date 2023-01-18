@@ -31,6 +31,13 @@ public class EditCategoryCommand : IRequest<Guid>
                 throw new NotFoundException<Category>(request.CategoryId);
             }
 
+            var duplicateCategory = await _dbContext.Categories.SingleOrDefaultAsync(c => c.Name == request.EditedCategory.Name);
+
+            if (duplicateCategory != null && duplicateCategory.Id != request.CategoryId)
+            {
+                throw new AlreadyExistsException<Category>(request.EditedCategory.Name!);
+            }
+
             category.Edit(request.EditedCategory.Name, request.EditedCategory.Color);
 
             await DeleteTags(request.EditedCategory.Tags, category);

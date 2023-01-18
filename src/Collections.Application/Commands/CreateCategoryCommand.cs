@@ -1,5 +1,6 @@
 ﻿using Collections.Application.Interfaces;
 using Collections.Domain.Entities;
+using Collections.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,13 @@ public class CreateCategoryCommand : IRequest<Guid>
 
         public async Task<Guid> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
+            var duplicateCategory = await _dbContext.Categories.SingleOrDefaultAsync(c => c.Name == request.NewCategory.Name);
+
+            if(duplicateCategory != null)
+            {
+                throw new AlreadyExistsException<Category>(request.NewCategory.Name);
+            }
+
             var category = Category.Create(request.NewCategory.Name, request.NewCategory.Color);
 
             var tags = await GetTags(request.NewCategory.Tags, category, cancellationToken);
