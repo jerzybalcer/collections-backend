@@ -10,7 +10,7 @@ public class CreateCategoryCommand : IRequest<Guid>
 {
     public NewCategory NewCategory { get; set; }
 
-    internal class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Guid>
+    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Guid>
     {
         private readonly ICollectionsDbContext _dbContext;
 

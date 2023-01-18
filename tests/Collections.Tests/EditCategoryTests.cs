@@ -1,6 +1,7 @@
 ﻿using Collections.Application.Commands;
 using Collections.Application.Interfaces;
 using Collections.Domain.Entities;
+using Collections.Domain.Exceptions;
 using Collections.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
@@ -237,5 +238,32 @@ public class EditCategoryTests
         var completelyDeletedTag = await _dbContext.Tags.SingleOrDefaultAsync(t => t.Name == "tag2");
 
         Assert.Null(completelyDeletedTag);
+    }
+
+    [Fact]
+    public async void ShouldNotSetDuplicateName()
+    {
+        var category1 = Category.Create("category1", "color");
+        var category2 = Category.Create("category2", "color");
+
+        _dbContext.Categories.Add(category1);
+        _dbContext.Categories.Add(category2);
+
+        await _dbContext.SaveChangesAsync();
+
+        var command = new EditCategoryCommand
+        {
+            CategoryId = category1.Id,
+            EditedCategory = new EditedCategory
+            {
+                Name = "category2",
+                Color = "newColor",
+                Tags = new List<string>()
+            }
+        };
+
+        var handler = new EditCategoryCommand.EditCategoryCommandHandler(_dbContext);
+
+        var exception = await Assert.ThrowsAsync<AlreadyExistsException<Category>>(() => handler.Handle(command, CancellationToken.None));
     }
 }
